@@ -1,0 +1,136 @@
+import random
+import string
+import nltk
+nltk.download('words')
+from nltk.corpus import words
+word_base = words.words()
+acceptable = [i.lower() for i in word_base if 5<= len(i) <= 12]
+    
+
+LIVES = 8
+LETTERS = string.ascii_lowercase
+HANGMAN = [
+    """
+        +---+
+            |
+            | 
+            |
+            |
+           /|
+          / |
+===================""",
+    """
+        +---+
+        |   |
+            | 
+            |
+            |
+           /|
+          / |
+===================""",
+    """
+        +---+
+        |   |
+        0   | 
+            |
+            |
+           /|
+          / |
+==================""",
+  """
+        +---+
+        |   |
+        0   | 
+        |   |
+            |
+           /|
+          / |
+==================""",
+ """
+        +---+
+        |   |
+        0   | 
+       /|   |
+            |
+           /|
+          / |
+==================""",
+"""
+        +---+
+        |   |
+        0   | 
+       /|\  |
+            |
+           /|
+          / |
+==================""",
+"""
+        +---+
+        |   |
+        0   | 
+       /|\  |
+       /    |
+           /|
+          / |
+==================""",
+
+"""
+        +---+
+        |   |
+        0   | 
+       /|\  |
+       / \  |
+           /|
+          / |
+==================  
+GAME OVER
+"""]
+
+
+          
+
+def random_word():
+    return random.choice(acceptable)
+
+
+def guess_letter():
+    while True:
+        guess = input("Guess Letter: ").lower()
+        if len(guess) == 1 and guess in LETTERS:
+            return guess
+        print("Input must be a single letter")
+        
+def game():
+    print("Welcome to Hangman. Please guess a letter to begin.")
+    
+    word = random_word()
+    guessed_letters = set()
+    lives_left = LIVES
+    hidden_word = " ".join(["_" for _ in word])
+    
+    while lives_left >0 and "_" in hidden_word:
+        print(f"Word : {hidden_word}")
+        print(f"{HANGMAN[8-lives_left]}")
+        guess = guess_letter()
+        
+        if guess in guessed_letters:
+            print("You have already guessed this letter")
+            continue
+        
+       
+        guessed_letters.add(guess)
+
+        if guess not in word:
+            lives_left -=1
+        hidden_word = " ".join([letter if letter in guessed_letters else "_ " for letter in word])
+    if "_" not in hidden_word:
+        print(f"Congratulations! The word was {word}.")
+    else:
+        print(f"Unlucky! The word was {word}.")
+if __name__ == "__main__":
+    game()
+        
+
+
+        
+
